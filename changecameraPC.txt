@@ -1,0 +1,17 @@
+Create a class named 'ChangeCamera' that manages virtual cameras in a game.
+
+Inside the class:
+  - Declare a public variable called 'currentCamera' to keep track of the active virtual camera.
+
+  Define a method called 'Start':
+    - This method is automatically executed when the script begins.
+    - During the start, increase the priority of the 'currentCamera' by 1. 
+    - The priority is a value that determines which virtual camera is in control.
+
+  Define a method called 'UpdateCamera' with a parameter named 'target':
+    - This method allows us to update the active camera to a new target camera.
+    - Decrease the priority of the current camera by 1, making it less dominant.
+    - Set the 'currentCamera' to the provided 'target', indicating the new camera we want to use.
+    - Increase the priority of the new 'currentCamera' by 1, making it the primary camera.
+
+End of the 'ChangeCamera' class.

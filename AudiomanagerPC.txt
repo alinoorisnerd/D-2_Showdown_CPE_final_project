@@ -1,0 +1,35 @@
+// Define the AudioManager class
+class AudioManager:
+    // Declare public variables
+    GameObject audioSourceGameObject
+    AudioSource gameAudio
+
+    // Define the Start method
+    method Start():
+        // Check if audioSourceGameObject is not assigned
+        if audioSourceGameObject is null:
+            Log an error message
+            Return
+
+        // Get the AudioSource component from audioSourceGameObject
+        gameAudio = audioSourceGameObject.GetComponent<AudioSource>()
+
+        // Check if gameAudio is not found
+        if gameAudio is null:
+            Log an error message
+            Return
+
+        // Play the audio when the game starts
+
+    // Define the Update method
+    method Update():
+        // Check for the game end condition (pressing Escape key)
+        if Escape key is pressed:
+            // Stop the game audio
+            gameAudio.Stop()
+
+            // Optionally, add other end game logic here
+
+            // Quit the application
+
+// End of AudioManager class

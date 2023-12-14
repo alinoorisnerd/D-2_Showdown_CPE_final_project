@@ -1,0 +1,35 @@
+Create a class named 'FoodChecker' for managing the checking of assembled food items.
+
+Inside the class:
+  - Declare public variables for inspector assignment: 'topBun', 'bottomBun', 'cheese', 'ham', 'greens', 'plate'.
+  - Declare private variables representing the values of each food item.
+  - Declare a variable 'totalFoodValue' to track the cumulative food value.
+  - Reference the 'CustomerSpawn' script to get the order value.
+
+  Define a method called 'Start':
+    - Find and store the 'CustomerSpawn' script.
+
+  Define a method called 'Update':
+    - Check if the food collides with the plate.
+    - If true, compare the food value with the order value:
+      - If matched, perform actions for a matched order.
+      - If not matched, perform actions for a mismatched order.
+
+  Define a method called 'IsFoodOnPlate':
+    - Implement logic to check if the food is on the plate.
+    - Return true if on the plate, false otherwise.
+
+  Define a method called 'CompareFoodWithOrder':
+    - Get the order value from the 'CustomerSpawn' script.
+    - Compare the order value with the total food value.
+    - Return true if they match, false otherwise.
+
+  Define a method called 'ResetSelectedObjects':
+    - Reset the total food value.
+    - Deactivate or reset selected game objects.
+
+  Define a method called 'AddObjectToFoodValue' with a parameter 'foodObject':
+    - Determine the value of the object and add it to the total food value.
+    - Perform other logic related to object pickup.
+
+End of the 'FoodChecker' class.

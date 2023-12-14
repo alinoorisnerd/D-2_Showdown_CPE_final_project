@@ -1,0 +1,26 @@
+Create a class named 'FadeScreen' for managing screen fading effects.
+
+Inside the class:
+  - Declare public variables for inspector assignment: 'fadeOnStart', 'fadeDuration', 'fadeColor'.
+  - Declare a private variable 'rend' of type Renderer to handle rendering.
+  
+  Define a method called 'Start':
+    - Get the Renderer component from the GameObject.
+    - If 'fadeOnStart' is true, initiate the fade-in effect.
+
+  Define a method called 'FadeIn':
+    - Call the 'Fade' method with parameters 1 (alpha in) and 0 (alpha out).
+
+  Define a method called 'FadeOut':
+    - Call the 'Fade' method with parameters 0 (alpha in) and 1 (alpha out).
+
+  Define a method called 'Fade' with parameters 'alphaIn' and 'alphaOut':
+    - Start a coroutine called 'FadeRoutine' with the specified alpha values.
+
+  Define a coroutine called 'FadeRoutine' with parameters 'alphaIn' and 'alphaOut':
+    - Use a while loop to gradually update the material's alpha value over time.
+    - Set the material's alpha value.
+    - Update the timer.
+    - Yield until the next frame.
+
+End of the 'FadeScreen' class.

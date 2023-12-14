@@ -1,0 +1,295 @@
+RestartGame.cs
+
+using UnityEngine;
+using System.Collections;
+
+public class RestartGame : MonoBehaviour
+{
+    public float restartDelay = 3f; // Time to wait before restarting the scene
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) // Assuming you're restarting when the player enters a trigger
+        {
+            StartCoroutine(RestartLevel());
+        }
+    }
+
+    IEnumerator RestartLevel()
+    {
+        yield return new WaitForSeconds(restartDelay);
+        Time.timeScale = 1f; // Resetting the time scale to normal speed
+        // Reload the current scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+}
+
+
+
+===========================================================================
+
+GameRespawn:
+
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Security.Cryptography;
+using UnityEngine;
+
+public class GameRespawn : MonoBehaviour
+{
+    public float threshold;
+    public Transform CryptoAPITransform; // Assuming this is the transform you want to refer to
+    public Vector3 spawnPoint; // Assuming spawnPoint is of Vector3 type
+
+    void Update()
+    {
+        if (CryptoAPITransform.position.y < threshold)
+        {
+            CryptoAPITransform.position = spawnPoint;
+           /* GameManager.health -= 1;*/
+        }
+    }
+}
+
+
+====================================================================================
+
+coinCollector.cs
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+
+public class CoinCollector : MonoBehaviour
+{
+    private int apples = 0;
+    public TextMeshProUGUI appleText;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Apple"))
+        {
+            apples++;
+            appleText.text = "Apples: " + apples.ToString();
+
+            Destroy(other.gameObject);
+        }
+    }
+}
+
+
+==============================================================================
+
+AudioManager.cs
+
+using System.Diagnostics;
+using UnityEngine;
+using UnityEngine.SceneManagement;  // Include the namespace for SceneManager
+using Application = UnityEngine.Application;  // Specify the full namespace for UnityEngine.Application
+using Debug = UnityEngine.Debug;
+
+public class AudioManager : MonoBehaviour
+{
+    // Reference to the GameObject with an AudioSource component in the Inspector
+    public GameObject audioSourceGameObject;
+
+    private AudioSource gameAudio;
+
+    void Start()
+    {
+        // Check if the AudioSource GameObject is assigned
+        if (audioSourceGameObject == null)
+        {
+            Debug.LogError("AudioSource GameObject is not assigned! Please assign an AudioSource GameObject in the Inspector.");
+            return;
+        }
+
+        // Get the AudioSource component from the assigned GameObject
+        gameAudio = audioSourceGameObject.GetComponent<AudioSource>();
+
+        // Check if the AudioSource component is found
+        if (gameAudio == null)
+        {
+            Debug.LogError("AudioSource component is not found on the assigned GameObject.");
+            return;
+        }
+
+        // Play the audio when the game starts
+        gameAudio.Play();
+    }
+
+    void Update()
+    {
+        // Check for game end condition (You might want to replace this with your specific end condition)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // Stop the audio when the game ends
+            gameAudio.Stop();
+
+            // Optionally, you can add other end game logic here
+
+            // Quit the application (you might want to replace this with your specific end game behavior)
+            Application.Quit();
+        }
+    }
+}
+
+
+==============================================================================================================
+PlayerController.cs
+
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    public float speed = 280.0f; // Speed at which the player moves
+    public float rotationSpeed = 20.0f; // Speed at which the player rotates
+
+    private void Update()
+    {
+        //-----------------------------------
+        // Action Buttons on Right Controller
+        //-----------------------------------
+
+        if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.RTouch))
+        {
+            // Your code for the A button press
+            Debug.Log("A button pressed!");
+        }
+
+        //-----------------------------------
+        // Player Movement Code Begins
+        //-----------------------------------
+
+        // Gather input from the right thumbstick for movement
+        Vector2 movementThumbstick = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick); // Right-hand controller
+        float moveHorizontal = movementThumbstick.x;
+        float moveVertical = movementThumbstick.y;
+
+        // Gather input from the left thumbstick for rotation
+        Vector2 rotationThumbstick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick); // Left-hand controller
+        float rotateHorizontal = rotationThumbstick.x;
+
+        // Initialize movement here
+        float playerRadius = 0.7f;
+        float playerHeight = 1f;
+        Vector3 moveDistance = new Vector3(moveHorizontal, 0, moveVertical) * speed * Time.deltaTime;
+        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical) * speed * Time.deltaTime;
+
+        // Perform Raycast check after initializing movement
+        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, movement); //raycast implementation
+
+        // Move the player forward, backward, left, or right
+        transform.Translate(moveDistance, Space.World);
+
+        // Rotate the player left or right based on the horizontal input from the left thumbstick
+        float rotation = rotateHorizontal * rotationSpeed * Time.deltaTime;
+        transform.Rotate(0, rotation, 0);
+
+        //-----------------------------------
+        // Player Movement Code Ends
+        //-----------------------------------
+    }
+
+    
+}
+
+===========================================================================================
+
+EnemyFollower -> follow.cs
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class Follow : MonoBehaviour
+{
+    public NavMeshAgent enemy;
+    public Transform player;
+
+    [SerializeField] private float timer = 4;
+    private float bulletTime;
+
+    public GameObject enemyBullet;
+    public Transform spawnPoint;
+    public float enemySpeed = 200f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        enemy.SetDestination(player.position);
+        ShootAtPlayer();
+    }
+
+    void ShootAtPlayer()
+    {
+        bulletTime -= Time.deltaTime;
+        if (bulletTime > 0) return;
+
+        bulletTime = timer;
+
+        // Instantiate the bullet prefab
+        GameObject bulletObj = Instantiate(enemyBullet, spawnPoint.position, spawnPoint.rotation);
+
+        // Get a reference to the BulletScript on the instantiated bullet object
+        BulletScript bulletScript = bulletObj.GetComponent<BulletScript>();
+
+        // Set the spawnPoint variable for the bullet
+        if (bulletScript != null)
+        {
+            bulletScript.spawnPoint = spawnPoint;
+        }
+
+        // Additional setup for the bullet (if needed)
+
+        Rigidbody bulletRig = bulletObj.GetComponent<Rigidbody>();
+        bulletRig.AddForce(bulletObj.transform.forward * enemySpeed * 10);
+        /*Destroy(bulletObj, 5f);*/
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            // Handle player collision if needed
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Bullet")
+        {
+           /* GameManager.health -= 1;*/
+        }
+    }
+}
+
+===================================================================================================
+
+BulletScript.cs
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BulletScript : MonoBehaviour
+{
+    // Add a spawnPoint variable to store the bullet's spawn point
+    public Transform spawnPoint;
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            Destroy(gameObject);
+        }
+    }
+}

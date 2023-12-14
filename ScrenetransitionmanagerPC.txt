@@ -1,0 +1,16 @@
+Create a class named 'SceneTransitionManager' for managing scene transitions.
+
+Inside the class:
+  - Declare a public variable 'fadeScreen' of type 'FadeScreen' for handling screen fading effects.
+
+  Define a method called 'GoToSceneAsync' with a parameter 'sceneIndex':
+    - Start a coroutine called 'GoToSceneAsyncRoutine' with the specified scene index.
+
+  Define a coroutine called 'GoToSceneAsyncRoutine' with a parameter 'sceneIndex':
+    - Initiate a fade-out effect using 'fadeScreen.FadeOut()'.
+    - Start loading the new scene asynchronously.
+    - Prevent the scene from activating immediately.
+    - Use a timer to wait for both the fade-out effect and the scene loading to complete.
+    - Allow the scene to activate.
+
+End of the 'SceneTransitionManager' class.

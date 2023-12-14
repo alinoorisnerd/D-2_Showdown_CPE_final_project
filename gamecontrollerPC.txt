@@ -1,0 +1,37 @@
+Create a class named 'GameController' for orchestrating a cooking tutorial.
+
+Inside the class:
+  - Declare public variables for inspector assignment: 'instructionsText', 'bunSelector', 'topBunSelector', 'friesSelector', 'hamSelector', 'cheeseSelector', 'plate1', 'plate2'.
+  - Declare an integer 'score'.
+  - Declare an enumeration 'GameState' representing different game states.
+  - Declare a variable 'currentState' of type 'GameState'.
+
+  Define a method called 'Start':
+    - Initialize the game in the 'GiveInstruction' state.
+    - Display a welcome message.
+    - Start the instruction sequence.
+
+  Define a coroutine called 'InstructionSequence':
+    - Display handling instructions.
+    - Display instructions for each ingredient with corresponding selectors.
+    - Display instructions for cooking ham and wait for its completion.
+    - Display instructions for cooking fries and wait for their completion.
+    - Display instructions for confirming food.
+    - Display the final score.
+
+  Define a method called 'DisplayInstruction' with a parameter 'text':
+    - Update the instructions text.
+
+  Define a method called 'DisplayIngredientInstruction' with parameters 'selector' and 'text':
+    - Set the instruction text.
+    - Enable the selector.
+    - Hide the selector after a delay.
+
+  Define a coroutine called 'HideSelectorAfterDelay' with parameters 'selector' and 'delay':
+    - Wait for a specified delay.
+    - Disable the selector.
+
+  Define the 'Update' method:
+    - Check the current game state and handle specific actions based on that state.
+
+End of the 'GameController' class.

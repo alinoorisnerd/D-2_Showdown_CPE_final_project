@@ -1,0 +1,25 @@
+Create a class named 'HamFrying' for managing the frying process of ham.
+
+Inside the class:
+  - Declare public variables for inspector assignment: 'goodHamMaterial', 'friedHamMaterial', 'fryingSound'.
+  - Declare private variables 'isFrying' and 'fryingTimer' to track frying status and time.
+
+  Define a method called 'OnTriggerEnter' with a parameter 'other':
+    - Check if the collider is the frying pan.
+    - If true, stick the ham to the frying pan and set 'isFrying' to true.
+
+  Define a method called 'Update':
+    - Check if the ham is frying.
+    - If true, increment the frying timer.
+    - Check if frying time is more than 10 seconds:
+      - Change material to fried ham.
+      - Play frying sound.
+      - Reset frying state.
+
+  Define a method called 'PlayFryingSound':
+    - Check if AudioSource is available.
+    - If not, add an AudioSource component.
+    - Play the frying sound.
+
+End of the 'HamFrying' class.
+
